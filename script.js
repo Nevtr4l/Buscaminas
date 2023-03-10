@@ -18,10 +18,13 @@ for (let i = 0; i < columnas; i++) {
   [ 0, 0, 0, 0, 0, 0 ]  // tablero[4]
 ]*/
 
-for (let i = 0; i < minas; i++) {
+for (let i = 0; i < minas; ) {
     let columna = Math.floor(Math.random() * columnas);
     let fila = Math.floor(Math.random() * filas);
-    tablero[columna][fila] = "M";
+    if(tablero[columna][fila] != "M") {
+      tablero[columna][fila] = "M";
+      i++;
+    }
 }
 
 /*tablero = [
@@ -105,7 +108,7 @@ tablero = tablero.join("\n");
     return tablero;
 }
 
-let tablero = generarTablero(10, 10, 30);
+let tablero = generarTablero(5, 5, 24);
 
 console.log(tablero);
 
