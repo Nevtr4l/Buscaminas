@@ -35,15 +35,17 @@ function mostrarTablero(tablero) {
 function revelarCelda(tablero, fila, columna) {
     let celda = document.querySelector(`[data-fila="${fila}"][data-columna="${columna}"]`);
     if (tablero[fila][columna] == 'M') {
+        celda.textContent = '💥';
+        celda.classList.add("mina");
         for (let i = 0; i < tablero.length; i++) {
             for (let j = 0; j < tablero[i].length; j++) {
                 let celda = document.querySelector(`[data-fila="${i}"][data-columna="${j}"]`);
-                if (tablero[i][j] == 'M') {
+                if (tablero[i][j] == 'M' && !celda.classList.contains("mina")) {
                     celda.textContent = '💣';
-                    celda.classList.add("mina");
-                } else {
+                    celda.classList.add("minaOver");
+                } else if (tablero[i][j] != 'M'  && !celda.classList.contains("revelado")){
                     celda.textContent = tablero[i][j];
-                    celda.classList.add("revelado");
+                    celda.classList.add("reveladoOver");
                 }
             };
         };

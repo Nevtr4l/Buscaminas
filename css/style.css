@@ -57,7 +57,7 @@ td.mina {
 }
 
 td.minaOver {
-  background-color: rgba(255, 0, 0, 0.589);
+  background-color: rgba(255, 0, 0, 0.26);
 }
 
 td.revelado {
@@ -65,7 +65,7 @@ td.revelado {
 }
 
 td.reveladoOver {
-  background-color: rgba(31, 151, 206, 0.534);
+  background-color: rgba(31, 151, 206, 0.219);
 }
 
 button {
