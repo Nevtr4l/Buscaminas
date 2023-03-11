@@ -49,7 +49,6 @@ function revelarCelda(tablero, fila, columna) {
                 }
             };
         };
-        // Mostrar el tablero actualizado en pantalla
         alert("¡BOOM! Has encontrado una mina");
     } else {
         // La celda no contiene una mina
