@@ -11,35 +11,6 @@ function generarTablero() {
     // Aquí se puede agregar cualquier otra funcionalidad después de generar el tablero
 }
 
-/*function mostrarTablero(tablero) {
-    // Obtener el elemento donde se mostrará el tablero
-    let contenedor = document.getElementById("contenedor-tablero");
-    // Limpiar el contenedor
-    contenedor.innerHTML = "";
-    // Crear la tabla
-    let tabla = document.createElement("table");
-    // Recorrer las filas del tablero
-    for (let i = 0; i < tablero.length; i++) {
-        let fila = tablero[i];
-        // Crear una fila en la tabla
-        let tr = document.createElement("tr");
-        // Recorrer las celdas de la fila
-        for (let j = 0; j < fila.length; j++) {
-            let valor = fila[j];
-            // Crear una celda en la fila
-            let td = document.createElement("td");
-            // Asignar el valor a la celda
-            td.innerHTML = valor;
-            // Agregar la celda a la fila
-            tr.appendChild(td);
-        };
-        // Agregar la fila a la tabla
-        tabla.appendChild(tr);
-    };
-    // Agregar la tabla al contenedor
-    contenedor.appendChild(tabla);
-}*/
-
 function mostrarTablero(tablero) {
     let contenedor = document.getElementById("contenedor-tablero");
     let tabla = document.createElement("table");
@@ -63,9 +34,20 @@ function mostrarTablero(tablero) {
 
 function revelarCelda(tablero, fila, columna) {
     let celda = document.querySelector(`[data-fila="${fila}"][data-columna="${columna}"]`);
-    if (tablero[fila][columna] === -1) {
-        // La celda contiene una mina
-        celda.classList.add("mina");
+    if (tablero[fila][columna] == 'M') {
+        for (let i = 0; i < tablero.length; i++) {
+            for (let j = 0; j < tablero[i].length; j++) {
+                let celda = document.querySelector(`[data-fila="${i}"][data-columna="${j}"]`);
+                if (tablero[i][j] == 'M') {
+                    celda.textContent = '💣';
+                    celda.classList.add("mina");
+                } else {
+                    celda.textContent = tablero[i][j];
+                    celda.classList.add("revelado");
+                }
+            };
+        };
+        // Mostrar el tablero actualizado en pantalla
         alert("¡BOOM! Has encontrado una mina");
     } else {
         // La celda no contiene una mina
@@ -73,8 +55,6 @@ function revelarCelda(tablero, fila, columna) {
         celda.classList.add("revelado");
     }
 }
-
-
 
 
 function generarTableroAleatorio(columnas, filas, minas) {
