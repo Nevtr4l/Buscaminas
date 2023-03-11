@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="shortcut icon" href="res/favicon.ico" type="image/x-icon">
+    <title>Buscaminas</title>
+</head>
+
+<body>
+    <section class="main">
+        <h4>Buscaminas</h4>
+        <label for="filas" style="text-align: left;">Filas:</label>
+        <input type="number" id="filas" name="filas" min="1" value="10">
+        <br>
+        <label for="columnas" style="text-align: left;">Columnas:</label>
+        <input type="number" id="columnas" name="columnas" min="1" value="10">
+        <br>
+        <label for="minas" style="text-align: left;">Minas:</label>
+        <input type="number" id="minas" name="minas" min="1" value="10">
+        <br>
+        <div style="text-align: center;">
+            <button onclick="generarTablero()">Generar</button>
+        </div>
+        <br><hr><br>
+        <div id="contenedor-tablero"></div>
+        <script src="scripts/script.js"></script>
+    </section>
+</body>
+
+</html>
