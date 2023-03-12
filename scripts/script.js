@@ -5,13 +5,16 @@ function generarTablero() {
     let minas = parseInt(document.getElementById("minas").value);
     // Verificar que los valores sean válidos
     if (filas <= 0 || columnas <= 0 || minas <= 0 || minas > filas * columnas) return alert("Valores inválidos");
+    document.getElementById('mensaje-ganador').style.display = 'none';
+    if(celdasSinMinasReveladas) celdasSinMinasReveladas = 0;
+    let totalCeldasSinMinas = (filas * columnas) - minas;
     // Generar el tablero
     let tablero = generarTableroAleatorio(columnas, filas, minas);
-    mostrarTablero(tablero);
+    mostrarTablero(tablero, totalCeldasSinMinas);
     // Aquí se puede agregar cualquier otra funcionalidad después de generar el tablero
 }
 
-function mostrarTablero(tablero) {
+function mostrarTablero(tablero, totalCeldasSinMinas) {
     let contenedor = document.getElementById("contenedor-tablero");
     let tabla = document.createElement("table");
     // Agregar filas y columnas al tablero
@@ -22,7 +25,7 @@ function mostrarTablero(tablero) {
             celda.dataset.fila = i;
             celda.dataset.columna = j;
             celda.addEventListener("click", function () {
-                revelarCelda(tablero, i, j);
+                revelarCelda(tablero, i, j, totalCeldasSinMinas);
             });
             fila.appendChild(celda);
         };
@@ -32,7 +35,8 @@ function mostrarTablero(tablero) {
     contenedor.appendChild(tabla);
 }
 
-function revelarCelda(tablero, fila, columna) {
+let celdasSinMinasReveladas = 0;
+function revelarCelda(tablero, fila, columna, totalCeldasSinMinas) {
     let celda = document.querySelector(`[data-fila="${fila}"][data-columna="${columna}"]`);
     if (tablero[fila][columna] == 'M') {
         celda.textContent = '💥';
@@ -49,23 +53,46 @@ function revelarCelda(tablero, fila, columna) {
                 }
             };
         };
-        alert("¡BOOM! Has encontrado una mina");
+        //alert("¡BOOM! Has encontrado una mina");
+        juegoTerminado = true;
+        mostrarMensaje('¡Perdiste!');
     } else {
-        revelarCeros(tablero, fila, columna)
-        // La celda no contiene una mina
+        revelarCeros(tablero, fila, columna,totalCeldasSinMinas);
         if(tablero[fila][columna]!==0) celda.textContent = tablero[fila][columna];
         celda.classList.add("revelado");
+        //Al dar clic a la última celda que no es mina restante
+        if (celdasSinMinasReveladas === totalCeldasSinMinas) {
+            for (let i = 0; i < tablero.length; i++) {
+                for (let j = 0; j < tablero[i].length; j++) {
+                    let celda = document.querySelector(`[data-fila="${i}"][data-columna="${j}"]`);
+                    if (tablero[i][j] == 'M' && !celda.classList.contains("mina")) {
+                        celda.textContent = '💣';
+                        celda.classList.add("minaOver");
+                    }
+                };
+            };
+            juegoTerminado = true;
+            mostrarMensaje('¡Felicidades, has ganado!');
+        }
     }
 }
 
-function revelarCeros(tablero, fila, columna) {
+function mostrarMensaje(mensaje) {
+    document.getElementById('mensaje-ganador').textContent = mensaje;
+    if (juegoTerminado) {
+      document.getElementById('mensaje-ganador').style.display = 'block';
+    } else {
+      document.getElementById('mensaje-ganador').style.display = 'none';
+    }
+  }
+  
+function revelarCeros(tablero, fila, columna,totalCeldasSinMinas) {
     if (fila < 0 || fila >= tablero.length || columna < 0 || columna >= tablero[0].length) {
         // Caso base: si la celda está fuera de los límites del tablero, no hacer nada
         return;
     }
 
     let celda = document.querySelector(`[data-fila="${fila}"][data-columna="${columna}"]`);
-
     if (celda.classList.contains("mina") || celda.classList.contains("revelado")) {
         // Caso base: si la celda es una mina o ya ha sido revelada, no hacer nada
         return;
@@ -73,6 +100,9 @@ function revelarCeros(tablero, fila, columna) {
 
     // Revelar la celda
     if(tablero[fila][columna]!==0) celda.textContent = tablero[fila][columna];
+    if (!celda.classList.contains("revelado")) {
+        celdasSinMinasReveladas++;
+    };
     celda.classList.add("revelado");
 
     if (tablero[fila][columna] === 0) {
@@ -82,7 +112,7 @@ function revelarCeros(tablero, fila, columna) {
                 // Verificamos que la celda esté dentro del tablero
                 if (i >= 0 && i < tablero.length && j >= 0 && j < tablero[0].length) {
                 // Llamamos recursivamente a la función para las celdas adyacentes
-                revelarCeros(tablero, i, j);
+                revelarCeros(tablero, i, j,totalCeldasSinMinas);
                 }
             }
         }

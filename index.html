@@ -15,19 +15,20 @@
         <h4>Buscaminas</h4>
             <div style="text-align: center;">
             <label for="filas" style="text-align: left;">Filas:</label>
-            <input type="number" id="filas" name="filas" min="1" value="10">
+            <input type="number" id="filas" name="filas" min="1" value="7">
             <br>
             <label for="columnas" style="text-align: left;">Columnas:</label>
-            <input type="number" id="columnas" name="columnas" min="1" value="10">
+            <input type="number" id="columnas" name="columnas" min="1" value="7">
             <br>
             <label for="minas" style="text-align: left;">Minas:</label>
-            <input type="number" id="minas" name="minas" min="1" value="10">
-            <br><br>
+            <input type="number" id="minas" name="minas" min="1" value="8">
+            <br>
         </div>
         <div style="text-align: center;">
             <button onclick="generarTablero()">Generar</button>
         </div>
         <br><hr><br>
+        <div id="mensaje-ganador" style="display:none; text-align: center;">¡Felicidades, has ganado!</div><br>
         <div id="contenedor-tablero"></div>
         <script src="scripts/script.js"></script>
     </section>
