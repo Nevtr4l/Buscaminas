@@ -77,17 +77,17 @@ function revelarCeros(tablero, fila, columna) {
 
     if (tablero[fila][columna] === 0) {
         // Si la celda es un 0, llamar a la función en las celdas adyacentes
-        revelarCeros(tablero, fila - 1, columna - 1);
-        revelarCeros(tablero, fila - 1, columna);
-        revelarCeros(tablero, fila - 1, columna + 1);
-        revelarCeros(tablero, fila, columna - 1);
-        revelarCeros(tablero, fila, columna + 1);
-        revelarCeros(tablero, fila + 1, columna - 1);
-        revelarCeros(tablero, fila + 1, columna);
-        revelarCeros(tablero, fila + 1, columna + 1);
+        for (let i = fila - 1; i <= fila + 1; i++) {
+            for (let j = columna - 1; j <= columna + 1; j++) {
+                // Verificamos que la celda esté dentro del tablero
+                if (i >= 0 && i < tablero.length && j >= 0 && j < tablero[0].length) {
+                // Llamamos recursivamente a la función para las celdas adyacentes
+                revelarCeros(tablero, i, j);
+                }
+            }
+        }
     }
 }
-
 
 function generarTableroAleatorio(columnas, filas, minas) {
     let tablero = [];
