@@ -44,7 +44,7 @@ function revelarCelda(tablero, fila, columna) {
                     celda.textContent = '💣';
                     celda.classList.add("minaOver");
                 } else if (tablero[i][j] != 'M' && !celda.classList.contains("revelado")) {
-                    celda.textContent = tablero[i][j];
+                    if(tablero[i][j]!==0) celda.textContent = tablero[i][j];
                     celda.classList.add("reveladoOver");
                 }
             };
