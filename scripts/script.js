@@ -43,7 +43,7 @@ function revelarCelda(tablero, fila, columna) {
                 if (tablero[i][j] == 'M' && !celda.classList.contains("mina")) {
                     celda.textContent = '💣';
                     celda.classList.add("minaOver");
-                } else if (tablero[i][j] != 'M'  && !celda.classList.contains("revelado")){
+                } else if (tablero[i][j] != 'M' && !celda.classList.contains("revelado")) {
                     celda.textContent = tablero[i][j];
                     celda.classList.add("reveladoOver");
                 }
@@ -51,9 +51,40 @@ function revelarCelda(tablero, fila, columna) {
         };
         alert("¡BOOM! Has encontrado una mina");
     } else {
+        revelarCeros(tablero, fila, columna)
         // La celda no contiene una mina
-        celda.textContent = tablero[fila][columna];
+        if(tablero[fila][columna]!==0) celda.textContent = tablero[fila][columna];
         celda.classList.add("revelado");
+    }
+}
+
+function revelarCeros(tablero, fila, columna) {
+    if (fila < 0 || fila >= tablero.length || columna < 0 || columna >= tablero[0].length) {
+        // Caso base: si la celda está fuera de los límites del tablero, no hacer nada
+        return;
+    }
+
+    let celda = document.querySelector(`[data-fila="${fila}"][data-columna="${columna}"]`);
+
+    if (celda.classList.contains("mina") || celda.classList.contains("revelado")) {
+        // Caso base: si la celda es una mina o ya ha sido revelada, no hacer nada
+        return;
+    }
+
+    // Revelar la celda
+    if(tablero[fila][columna]!==0) celda.textContent = tablero[fila][columna];
+    celda.classList.add("revelado");
+
+    if (tablero[fila][columna] === 0) {
+        // Si la celda es un 0, llamar a la función en las celdas adyacentes
+        revelarCeros(tablero, fila - 1, columna - 1);
+        revelarCeros(tablero, fila - 1, columna);
+        revelarCeros(tablero, fila - 1, columna + 1);
+        revelarCeros(tablero, fila, columna - 1);
+        revelarCeros(tablero, fila, columna + 1);
+        revelarCeros(tablero, fila + 1, columna - 1);
+        revelarCeros(tablero, fila + 1, columna);
+        revelarCeros(tablero, fila + 1, columna + 1);
     }
 }
 
