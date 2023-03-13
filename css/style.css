@@ -29,12 +29,11 @@ body {
 }
 
 label {
-  display: inline-block;
-  width: 100px;
+  width: 50%;
 }
 
 input[type="number"] {
-  width: 100px;
+  width: 42%;
 }
 
 table {
@@ -68,7 +67,11 @@ td.reveladoOver {
   background-color: rgba(31, 151, 206, 0.219);
 }
 
-button {
+td.bandera {
+  background-color: #747474;
+}
+
+button.boton-generar{
   margin-top: 10px;
   padding: 5px 10px;
   border: none;
@@ -76,4 +79,25 @@ button {
   color: white;
   font-size: 16px;
   cursor: pointer;
+}
+
+button.boton-azul{
+  padding: 5px 10px;
+  border: none;
+  background-color: #747474;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button.boton-rojo{
+  margin-top: 10px;
+  padding: 5px 10px;
+  border: none;
+  background-color: #747474;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button.activo {
+  background-color: #cfcfcf;
 }

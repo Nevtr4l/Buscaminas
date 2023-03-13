@@ -1,3 +1,23 @@
+let botonAzul = document.querySelector(`.boton-azul`);
+let botonRojo = document.querySelector(`.boton-rojo`);
+let activo = botonAzul;
+
+botonAzul.addEventListener("click", function() {
+    if (activo !== botonAzul) {
+      activo.classList.remove("activo");
+      botonAzul.classList.add("activo");
+      activo = botonAzul;
+    }
+});
+  
+botonRojo.addEventListener("click", function() {
+    if (activo !== botonRojo) {
+      activo.classList.remove("activo");
+      botonRojo.classList.add("activo");
+      activo = botonRojo;
+    }
+});
+    
     //1. Almacenar Filas, Columnas y Minas. Calcular totalCeldasSinMinas.
     function clicGenerar() {
         let columnas = parseInt(document.getElementById("columnas").value);
@@ -74,48 +94,54 @@
     //4. Al dar clic a una celda, generar una nueva tabla hasta que la celda clicada no sea una mina.
     let celdasSinMinasReveladas = 0;
     let primerClick = true;
+
     function clickCelda(tablero, fila, columna, totalCeldasSinMinas, minas) {
         let celda = document.querySelector(`[data-fila="${fila}"][data-columna="${columna}"]`);
-        if (celda.classList.contains("mina") || celda.classList.contains("minaOver") || celda.classList.contains("revelado") || celda.classList.contains("reveladoOver")) return;
-        if (tablero[fila][columna] == 'M' && primerClick == true) {
-            let tableroNew = generarTablero(tablero.length, tablero[columna].length, minas);
-            mostrarTablero(tableroNew, totalCeldasSinMinas);
-            clickCelda(tableroNew, fila, columna, totalCeldasSinMinas, minas);
-        } else if (tablero[fila][columna] == 'M' && primerClick == false) {
-            celda.textContent = '💥';
-            celda.classList.add("mina");
-            for (let i = 0; i < tablero.length; i++) {
-                for (let j = 0; j < tablero[i].length; j++) {
-                    let celda = document.querySelector(`[data-fila="${i}"][data-columna="${j}"]`);
-                    if (tablero[i][j] == 'M' && !celda.classList.contains("mina")) {
-                        celda.textContent = '💣';
-                        celda.classList.add("minaOver");
-                    } else if (tablero[i][j] != 'M' && !celda.classList.contains("revelado")) {
-                        if (tablero[i][j] !== 0) celda.textContent = tablero[i][j];
-                        celda.classList.add("reveladoOver");
-                    }
-                };
-            };
-            juegoTerminado = true;
-            mostrarMensaje('¡Perdiste!');
-        } else {
-            primerClick = false;
-            revelarCeros(tablero, fila, columna, totalCeldasSinMinas);
-            if (tablero[fila][columna] !== 0) celda.textContent = tablero[fila][columna];
-            celda.classList.add("revelado");
-            if (celdasSinMinasReveladas === totalCeldasSinMinas) {
+        if (celda.classList.contains("mina") || celda.classList.contains("minaOver") || celda.classList.contains("revelado") || celda.classList.contains("reveladoOver")) return; 
+        if (activo == botonAzul) {
+            if (celda.classList.contains("bandera")) return;
+            if (tablero[fila][columna] == 'M' && primerClick == true) {
+                let tableroNew = generarTablero(tablero.length, tablero[columna].length, minas);
+                mostrarTablero(tableroNew, totalCeldasSinMinas);
+                clickCelda(tableroNew, fila, columna, totalCeldasSinMinas, minas);
+            } else if (tablero[fila][columna] == 'M' && primerClick == false) {
+                celda.textContent = '💥';
+                celda.classList.add("mina");
                 for (let i = 0; i < tablero.length; i++) {
                     for (let j = 0; j < tablero[i].length; j++) {
                         let celda = document.querySelector(`[data-fila="${i}"][data-columna="${j}"]`);
                         if (tablero[i][j] == 'M' && !celda.classList.contains("mina")) {
                             celda.textContent = '💣';
                             celda.classList.add("minaOver");
+                        } else if (tablero[i][j] != 'M' && !celda.classList.contains("revelado")) {
+                            if (tablero[i][j] !== 0) celda.textContent = tablero[i][j];
+                            celda.classList.add("reveladoOver");
                         }
                     };
                 };
                 juegoTerminado = true;
-                mostrarMensaje('¡Felicidades, has ganado!');
+                mostrarMensaje('¡Perdiste!');
+            } else {
+                primerClick = false;
+                revelarCeros(tablero, fila, columna, totalCeldasSinMinas);
+                if (tablero[fila][columna] !== 0) celda.textContent = tablero[fila][columna];
+                celda.classList.add("revelado");
+                if (celdasSinMinasReveladas === totalCeldasSinMinas) {
+                    for (let i = 0; i < tablero.length; i++) {
+                        for (let j = 0; j < tablero[i].length; j++) {
+                            let celda = document.querySelector(`[data-fila="${i}"][data-columna="${j}"]`);
+                            if (tablero[i][j] == 'M' && !celda.classList.contains("mina")) {
+                                celda.textContent = '💣';
+                                celda.classList.add("minaOver");
+                            }
+                        };
+                    };
+                    juegoTerminado = true;
+                    mostrarMensaje('¡Felicidades, has ganado!');
+                };
             };
+        } else {
+            celda.classList.contains("bandera") ? celda.classList.remove("bandera") : celda.classList.add("bandera");
         };
     }
     //5. Mostrar el mensaje de win/lose
