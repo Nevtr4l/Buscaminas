@@ -51,8 +51,7 @@
         };
         return tablero;
     };
-
-    //3. Mostrar el tablero con los valores definidos pero sin colocar las minas. 
+    //3. Mostrar el tablero con los valores definidos
     function mostrarTablero(tablero, totalCeldasSinMinas, minas) {
         let contenedor = document.getElementById("contenedor-tablero");
         let tabla = document.createElement("table");
@@ -75,16 +74,14 @@
     //4. Al dar clic a una celda, generar una nueva tabla hasta que la celda clicada no sea una mina.
     let celdasSinMinasReveladas = 0;
     let primerClick = true;
-
     function clickCelda(tablero, fila, columna, totalCeldasSinMinas, minas) {
         let celda = document.querySelector(`[data-fila="${fila}"][data-columna="${columna}"]`);
+        if (celda.classList.contains("mina") || celda.classList.contains("minaOver") || celda.classList.contains("revelado") || celda.classList.contains("reveladoOver")) return;
         if (tablero[fila][columna] == 'M' && primerClick == true) {
-            //console.log('Clic 1', primerClick)
             let tableroNew = generarTablero(tablero.length, tablero[columna].length, minas);
             mostrarTablero(tableroNew, totalCeldasSinMinas);
             clickCelda(tableroNew, fila, columna, totalCeldasSinMinas, minas);
         } else if (tablero[fila][columna] == 'M' && primerClick == false) {
-            //console.log('Clic 2', primerClick)
             celda.textContent = '💥';
             celda.classList.add("mina");
             for (let i = 0; i < tablero.length; i++) {
@@ -103,11 +100,9 @@
             mostrarMensaje('¡Perdiste!');
         } else {
             primerClick = false;
-            //console.log('Clic 3', primerClick)
             revelarCeros(tablero, fila, columna, totalCeldasSinMinas);
             if (tablero[fila][columna] !== 0) celda.textContent = tablero[fila][columna];
             celda.classList.add("revelado");
-            //Al dar clic a la última celda que no es mina restante
             if (celdasSinMinasReveladas === totalCeldasSinMinas) {
                 for (let i = 0; i < tablero.length; i++) {
                     for (let j = 0; j < tablero[i].length; j++) {
@@ -120,31 +115,23 @@
                 };
                 juegoTerminado = true;
                 mostrarMensaje('¡Felicidades, has ganado!');
-            }
+            };
         };
     }
-
-
+    //5. Mostrar el mensaje de win/lose
     function mostrarMensaje(mensaje) {
         document.getElementById('mensaje-ganador').textContent = mensaje;
         if (juegoTerminado) {
             document.getElementById('mensaje-ganador').style.display = 'block';
         } else {
             document.getElementById('mensaje-ganador').style.display = 'none';
-        }
+        };
     }
-
+    //6. Si le doy clic a un 0, revelar las celdas adyacentes que no son minas
     function revelarCeros(tablero, fila, columna, totalCeldasSinMinas) {
-        if (fila < 0 || fila >= tablero.length || columna < 0 || columna >= tablero[0].length) {
-            // Caso base: si la celda está fuera de los límites del tablero, no hacer nada
-            return;
-        }
-
+        if (fila < 0 || fila >= tablero.length || columna < 0 || columna >= tablero[0].length) return;
         let celda = document.querySelector(`[data-fila="${fila}"][data-columna="${columna}"]`);
-        if (celda.classList.contains("mina") || celda.classList.contains("revelado")) {
-            // Caso base: si la celda es una mina o ya ha sido revelada, no hacer nada
-            return;
-        }
+        if (celda.classList.contains("mina") || celda.classList.contains("revelado")) return;
 
         // Revelar la celda
         if (tablero[fila][columna] !== 0) celda.textContent = tablero[fila][columna];
@@ -157,12 +144,10 @@
             // Si la celda es un 0, llamar a la función en las celdas adyacentes
             for (let i = fila - 1; i <= fila + 1; i++) {
                 for (let j = columna - 1; j <= columna + 1; j++) {
-                    // Verificamos que la celda esté dentro del tablero
                     if (i >= 0 && i < tablero.length && j >= 0 && j < tablero[0].length) {
-                        // Llamamos recursivamente a la función para las celdas adyacentes
                         revelarCeros(tablero, i, j, totalCeldasSinMinas);
-                    }
-                }
-            }
+                    };
+                };
+            };
         }
     }
