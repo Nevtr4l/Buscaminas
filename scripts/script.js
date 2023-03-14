@@ -110,6 +110,7 @@ botonRojo.addEventListener("click", function() {
                 for (let i = 0; i < tablero.length; i++) {
                     for (let j = 0; j < tablero[i].length; j++) {
                         let celda = document.querySelector(`[data-fila="${i}"][data-columna="${j}"]`);
+                        if (celda.classList.contains("bandera")) celda.classList.remove("bandera"); //
                         if (tablero[i][j] == 'M' && !celda.classList.contains("mina")) {
                             celda.textContent = '💣';
                             celda.classList.add("minaOver");
@@ -130,6 +131,7 @@ botonRojo.addEventListener("click", function() {
                     for (let i = 0; i < tablero.length; i++) {
                         for (let j = 0; j < tablero[i].length; j++) {
                             let celda = document.querySelector(`[data-fila="${i}"][data-columna="${j}"]`);
+                            if (celda.classList.contains("bandera")) celda.classList.remove("bandera"); //
                             if (tablero[i][j] == 'M' && !celda.classList.contains("mina")) {
                                 celda.textContent = '💣';
                                 celda.classList.add("minaOver");
@@ -147,27 +149,20 @@ botonRojo.addEventListener("click", function() {
     //5. Mostrar el mensaje de win/lose
     function mostrarMensaje(mensaje) {
         document.getElementById('mensaje-ganador').textContent = mensaje;
-        if (juegoTerminado) {
-            document.getElementById('mensaje-ganador').style.display = 'block';
-        } else {
-            document.getElementById('mensaje-ganador').style.display = 'none';
-        };
+        (juegoTerminado) ? document.getElementById('mensaje-ganador').style.display = 'block' : document.getElementById('mensaje-ganador').style.display = 'none';
     }
     //6. Si le doy clic a un 0, revelar las celdas adyacentes que no son minas
     function revelarCeros(tablero, fila, columna, totalCeldasSinMinas) {
         if (fila < 0 || fila >= tablero.length || columna < 0 || columna >= tablero[0].length) return;
         let celda = document.querySelector(`[data-fila="${fila}"][data-columna="${columna}"]`);
-        if (celda.classList.contains("mina") || celda.classList.contains("revelado")) return;
-
+        if (celda.classList.contains("mina") || celda.classList.contains("bandera") || celda.classList.contains("revelado")) return;
         // Revelar la celda
         if (tablero[fila][columna] !== 0) celda.textContent = tablero[fila][columna];
         if (!celda.classList.contains("revelado")) {
             celdasSinMinasReveladas++;
         };
         celda.classList.add("revelado");
-
         if (tablero[fila][columna] === 0) {
-            // Si la celda es un 0, llamar a la función en las celdas adyacentes
             for (let i = fila - 1; i <= fila + 1; i++) {
                 for (let j = columna - 1; j <= columna + 1; j++) {
                     if (i >= 0 && i < tablero.length && j >= 0 && j < tablero[0].length) {
